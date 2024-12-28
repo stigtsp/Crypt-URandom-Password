@@ -10,23 +10,27 @@ use Exporter qw(import);
 
 our @EXPORT_OK = qw(urandom_token);
 
-our $VERION = "0.001_001";
+our $VERION = "0.002";
 
 =head1 NAME
 
-Crypt::URandom::Token - Generate tokens from cryptographically secure
-pseudorandom bytes
+Crypt::URandom::Token - Generate secure strings for passwords, secrets and similar
 
 =head1 SYNOPSIS
 
-  # Function usage:
-
   use Crypt::URandom::Token qw(urandom_token);
-  my $token = urandom_token(); # generates a 44-character alphanumeric token
+
+  # generates a 44-character alphanumeric token (default)
+  my $token = urandom_token();
+
+  # generate a 6 digit numeric pin
+  my $pin = urandom_token(6, [0..9]);
+
+  # generate a 19 character lowercase alphanumeric password
+  my $password = urandom_token(19, [a..z, 0..9]);
+
 
   # Object usage:
-
-  use Crypt::URandom::Token;
   my $obj = Crypt::URandom::Token->new(
       length   => 44,
       alphabet => [ A..Z, a..z, 0..9 ],
@@ -35,17 +39,22 @@ pseudorandom bytes
 
 =head1 DESCRIPTION
 
-This module provides a secure way to generate a random token for tokens and
-similar using L<Crypt::URandom> as a source of random bits.
+This module provides a secure way to generate a random token for passwords and
+similar using L<Crypt::URandom> as the source of random bits.
 
-By default, it generates an alphanumeric token with more than 256 bits of
-entropy, which should be sufficient for most purposes as of 2025.
+By default, it generates a 44 character alphanumeric token with more than 256
+bits of entropy. A custom alphabet with between 2 and 256 elements can be
+provided.
+
+Modulo reduction and rejection sampling is used to prevent modulus bias. Keep in
+mind that bias will be introduced if duplicate elements are provided in the
+alphabet.
 
 =head1 FUNCTIONS
 
 =head2 urandom_token($length = 44, $alphabet = [ A..Z, a..z, 0..9 ]);
 
-Returns a cryptographically secure random token suitable for token.
+Returns a string of C<$length> random characters from C<$alphabet>.
 
 If C<$length> is not provided, it defaults to 44.
 
@@ -64,14 +73,14 @@ paramters:
 
 =item * C<length> - desired token length (defaults to 44)
 
-=item * C<alphabet> - the set of characters to use. Can be a token (split into individual chars) or an array reference. Defaults to [ A..Z, a..z, 0..9 ]
+=item * C<alphabet> - the set of characters to use. Can be a string of characters or an array reference. Defaults to C<[ A..Z, a..z, 0..9 ]>
 
 =back
 
 =head2 get
 
-Generates and returns a random token as a token, using the object's
-attributes for length and alphabet.
+Generates and returns a random token as a token, using the object attributes for
+length and alphabet.
 
 =head1 AUTHOR
 
