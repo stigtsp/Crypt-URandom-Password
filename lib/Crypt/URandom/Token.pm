@@ -59,7 +59,7 @@ Returns a string of C<$length> random characters from C<$alphabet>.
 If C<$length> is not provided, it defaults to 44.
 
 If C<$alphabet> is not provided, it defaults to uppercase letters, lowercase
-letters, and digits. You can provide either a token of characters or an
+letters, and digits. You can provide either a string of characters or an
 arrayref.
 
 =head1 METHODS
@@ -67,7 +67,7 @@ arrayref.
 =head2 new
 
 Creates a new token generator object. Accepts a hash or hashref with these
-paramters:
+parameters:
 
 =over 4
 
