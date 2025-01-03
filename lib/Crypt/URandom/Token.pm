@@ -23,12 +23,11 @@ Crypt::URandom::Token - Generate secure strings for passwords, secrets and simil
   # generates a 44-character alphanumeric token (default)
   my $token = urandom_token();
 
-  # generate a 6 digit numeric pin
-  my $pin = urandom_token(6, [0..9]);
-
   # generate a 19 character lowercase alphanumeric password
   my $password = urandom_token(19, [a..z, 0..9]);
 
+  # generate a 6 digit numeric pin
+  my $pin = urandom_token(6, "0123456789");
 
   # Object usage:
   my $obj = Crypt::URandom::Token->new(
@@ -52,7 +51,9 @@ alphabet.
 
 =head1 FUNCTIONS
 
-=head2 urandom_token($length = 44, $alphabet = [ A..Z, a..z, 0..9 ]);
+=head2 urandom_token
+
+  my $token = urandom_token($length, $alphabet);
 
 Returns a string of C<$length> random characters from C<$alphabet>.
 
